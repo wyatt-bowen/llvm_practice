@@ -1,3 +1,9 @@
 .DS_Store
 build/
 out.ll
+LLVM/build/
+LLVM/clang/
+LLVM/install
+LLVM/llvm/
+LLVM/clang-11.0.0.src.tar.xz
+LLVM/llvm-11.0.0.src.tar.xz
