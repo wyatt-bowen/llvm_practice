@@ -89,3 +89,6 @@ Pass/LivenessAnalysis/libLivenessAnalysis.so
 Pass/LivenessAnalysis/Makefile
 Pass/Makefile
 test/phase1/test.ll
+*.o
+*.so
+.vscode/settings.json

@@ -34,6 +34,7 @@ namespace
           {
             errs() << "This is Load"
                    << "\n";
+            errs() << "Operand: " << inst.getOperand(0)->getName() << "\n";
           }
           if (inst.getOpcode() == Instruction::Store)
           {
@@ -42,7 +43,7 @@ namespace
           }
           if (inst.isBinaryOp())
           {
-            errs() << "Op Code:" << inst.getOpcodeName() << "\n"; 
+            errs() << "Op Code:" << inst.getOpcodeName() << "\n";
             if (inst.getOpcode() == Instruction::Add)
             {
               errs() << "This is Addition"
@@ -73,13 +74,15 @@ namespace
           }
         }
         errs() << "predecessors:";
-        for (auto *pred: predecessors(&basic_block)) {
+        for (auto *pred : predecessors(&basic_block))
+        {
           // get all predecessors of the current basic block
           errs() << " " << pred->getName();
         }
         errs() << "\n";
         errs() << "successors:";
-        for (auto *succ: successors(&basic_block)) {
+        for (auto *succ : successors(&basic_block))
+        {
           // get all successors of the current basic block
           errs() << " " << succ->getName();
         }

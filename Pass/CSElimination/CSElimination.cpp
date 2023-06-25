@@ -20,13 +20,13 @@ struct CSElimination : public FunctionPass
 
   bool runOnFunction(Function &F) override
   {
-    
+
     return true; // Indicate this is a Transform pass
   }
 }; // end of struct CSElimination
-} // end of anonymous namespace
+//} // end of anonymous namespace
 
 char CSElimination::ID = 0;
 static RegisterPass<CSElimination> X("CSElimination", "CSElimination Pass",
-                                      false /* Only looks at CFG */,
-                                      true /* Tranform Pass */);
+                                     false /* Only looks at CFG */,
+                                     true /* Tranform Pass */);
