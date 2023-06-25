@@ -6,17 +6,17 @@ target triple = "x86_64-unknown-linux-gnu"
 ; Function Attrs: noinline nounwind uwtable
 define dso_local void @test() #0 {
 entry:
-  %a = alloca i32, align 4
-  %b = alloca i32, align 4
-  %c = alloca i32, align 4
-  %d = alloca i32, align 4
-  %e = alloca i32, align 4
-  %f = alloca i32, align 4
-  %0 = load i32, i32* %b, align 4
-  %1 = load i32, i32* %c, align 4
-  %add = add nsw i32 %0, %1
-  store i32 %add, i32* %e, align 4
-  %2 = load i32, i32* %e, align 4
+  %b = alloca i32, align 4                        ;int a, b, c, d, e, f;
+  %c = alloca i32, align 4                        ;int a, b, c, d, e, f;
+  %d = alloca i32, align 4                        ;int a, b, c, d, e, f;
+  %a = alloca i32, align 4                        ;int a, b, c, d, e, f;
+  %e = alloca i32, align 4                        ;int a, b, c, d, e, f;
+  %f = alloca i32, align 4                        ;int a, b, c, d, e, f;
+  %0 = load i32, i32* %b, align 4                 ;e = b + c;
+  %1 = load i32, i32* %c, align 4                 ;e = b + c;
+  %add = add nsw i32 %0, %1                       ;e = b + c;
+  store i32 %add, i32* %e, align 4                ;e = b + c;
+  %2 = load i32, i32* %e, align 4                 ;e = b + c;
   %cmp = icmp sgt i32 %2, 0
   br i1 %cmp, label %if.then, label %if.else
 

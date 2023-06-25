@@ -85,33 +85,6 @@ namespace
       errs() << "LivenessAnalysis: ";
       errs() << F.getName() << "\n";
 
-      // reverse start
-      // auto bbList = &(F.getBasicBlockList()); // fetch the pointer of the list
-
-      // // errs() << "reverse  \n";
-      // errs() << "Basic block names in reverse hopefully: ";
-
-      // for (auto bb = bbList->rbegin(); bb != bbList->rend(); bb++)
-      // {
-
-      //   BasicBlock *b = &(*bb);
-
-      //   errs() << b->getName() << ", ";
-      // }
-      // errs() << "\n";
-      // reverse end
-
-      // normal traversal
-      // for (auto &basic_block : F)
-      // {
-      //   errs() << "Basic block name: " << basic_block.getName() << "\n";
-      //   for (auto &instruction : basic_block)
-      //   {
-      //   }
-      // }
-      // normal traversal end
-
-      // actual algo!
       // step 2 on paper
       for (auto &basic_block : F)
       {
@@ -132,19 +105,7 @@ namespace
             _VarKill.insert(ident);
           }
         } // end for each instruction
-        // errs() << basic_block.getName() << "'s UEVar: ";
-        // for (const auto &element : _UEVar)
-        // {
-        //   errs() << element << " ";
-        // }
-        // errs() << "\n";
 
-        // errs() << basic_block.getName() << "'s VarKill: ";
-        // for (const auto &element : _VarKill)
-        // {
-        //   errs() << element << " ";
-        // }
-        // errs() << "\n";
         UEVar[bbName] = _UEVar; // one of the last lines
         VarKill[bbName] = _VarKill;
       } // end for basic block
@@ -171,23 +132,15 @@ namespace
             std::set<std::string> _VarKill = VarKill[succName];
             std::set<std::string> _LiveOut = LiveOut[succName];
 
-            // errs() << "Set difference in " << bbName << "'s successor " << succName << "\n";
             std::set<std::string> intersectionSet = getSetDifference(_LiveOut, _VarKill);
-            // errs() << stringSetString(intersectionSet) << "} = {" << stringSetString(_LiveOut) << " - " << stringSetString(_VarKill) << "\n";
 
-            // errs() << "Union in " << bbName << "'s successor " << succName << "\n";
             std::set<std::string> unionSet = getUnion(_UEVar, intersectionSet);
-            // errs() << stringSetString(unionSet) << " = " << stringSetString(_UEVar) << " U " << stringSetString(intersectionSet) << "\n";
 
-            // Union with after
-            // errs() << "Union with after in " << bbName << "'s successor " << succName << "\n";
             std::set<std::string> beforeaftergetschanged = after;
             after = getUnion(beforeaftergetschanged, unionSet);
-            // errs() << stringSetString(after) << " = " << stringSetString(beforeaftergetschanged) << " U " << stringSetString(unionSet) << "\n\n";
           } // end for successors
           if (before != after)
             changed = true;
-          // errs() << "LiveOut of " << bbName << ": " << stringSetString(after) << "\n\n\n";
           LiveOut[bbName] = after;
         } // end for each block
       }   // end while
@@ -198,13 +151,8 @@ namespace
       {
         string bbName = string(basic_block.getName());
         errs() << "BasicBlock " << bbName << ":\n";
-        //       << "UEVar: " << stringSetString(UEVar[bbName]) << "\n";
-
-        // errs() << "\nVarKill: " << stringSetString(VarKill[bbName]) << "\n";
 
         errs() << "LiveOut: " << stringSetString(LiveOut[bbName]) << "\n\n";
-
-        // errs() << "\n";
       }
 
       return false;
