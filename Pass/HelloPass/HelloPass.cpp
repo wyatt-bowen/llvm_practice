@@ -43,6 +43,8 @@ namespace
           }
           if (inst.isBinaryOp())
           {
+            // Instruction variable info
+            errs() << "Variable being set: " << inst.getValueName() << "\n";
             errs() << "Op Code:" << inst.getOpcodeName() << "\n";
             if (inst.getOpcode() == Instruction::Add)
             {

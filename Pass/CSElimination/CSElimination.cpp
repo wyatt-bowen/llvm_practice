@@ -19,12 +19,12 @@ using namespace std;
 namespace
 {
   llvm::IRBuilder<> builder(context);
-  llvm::Module module("MyModule", context);
+  // llvm::Module module("MyModule", context);
   struct ValueNumberAndName
   {
     int value;
-    string name;
-    ValueNumberAndName(int value, string name)
+    Value *name;
+    ValueNumberAndName(int value, Value *name)
     {
       value = value;
       name = name;
@@ -33,9 +33,13 @@ namespace
     {
       value = value;
     }
-    ValueNumberAndName(string name)
+    ValueNumberAndName(Value *name)
     {
       name = name;
+    }
+    string getName()
+    {
+      return string(name->getName());
     }
   };
   string getOperandString(Instruction inst, int operandNum = 0)
@@ -108,13 +112,14 @@ namespace
             keyString += "uhh";
           }
 
-          string operationResult = string(instruction.getName());
+          // string operationResult = string(instruction.getName());
+          Value *operationResult = &instruction;
           // Now look for the keyString in the table
           auto keyStringLocation = table.find(keyString);
           // If not found: add 1 thing to the table
           // The key for the keyString will get the a new valueNum,
           // and the name of the operationResult variable.
-          if (keyStringLocation == table.end() || (keyStringLocation != table.end() && table[keyString].value != table[table[keyString].name].value))
+          if (keyStringLocation == table.end() || (keyStringLocation != table.end() && table[keyString].value != table[table[keyString].getName()].value))
           { // (Not found) OR (Found AND keystring's value != the variables current value), add to table, don't change instruction
             table[keyString] = ValueNumberAndName(nextValueNum++, operationResult);
           }
@@ -122,10 +127,12 @@ namespace
           { // Found an existing entry of
             // Value *val =
             //     Instruction *storeInst = builder.CreateAlignedStore()
+            Instruction *storeInst = builder.CreateStore(table[keyString].name, operationResult);
+            instruction.replaceAllUsesWith(storeInst);
           }
 
           // No matter what: The key for the variable being assigned to will have a new valueNum = keyStrings valueNum
-          table[operationResult].value = table[keyString].value;
+          table[string(operationResult->getName())].value = table[keyString].value;
         }
       }
       return true; // Indicate this is a Transform pass
